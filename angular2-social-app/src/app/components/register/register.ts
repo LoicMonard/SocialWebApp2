@@ -26,7 +26,15 @@ export class RegisterComponent {
         if (this.ngForm.form.invalid) {
             return;
         }
+
+        this.registrationService.usernameExists(this.model.username)
+        .then( () => {
+            
+        })
         
         // register user with registrationService
+        this.registrationService.register(this.model);
+        const link = ['/login'];
+        this.router.navigate(link);
     }
 }

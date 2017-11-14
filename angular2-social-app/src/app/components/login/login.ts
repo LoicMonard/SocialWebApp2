@@ -19,7 +19,17 @@ export class LoginComponent  {
     ) { }
 
     login() {
-        this.failed = false;
         // use authService to authenticate and router to redirect
+        this.authService.authenticate(this.model)
+        .then(() => {
+            this.router.navigate(link);
+            this.failed = false;
+            })
+            .catch(() => {
+                console.log("Suarezito le minable");
+                this.failed = true;
+            });
+        const link = ['/'];
+        ;
     }
 }
