@@ -16,6 +16,7 @@ export class RegisterComponent {
     ngForm: NgForm;
 
     model = new UserRegistration();
+    failed: boolean = false;
 
     constructor(
         private registrationService: RegistrationService,
@@ -28,13 +29,18 @@ export class RegisterComponent {
         }
 
         this.registrationService.usernameExists(this.model.username)
-        .then( () => {
-            
+        .then( userExists => {
+            if(userExists) {
+                this.failed = true;
+            }
+            else {
+                // register user with registrationService
+                this.failed = false;
+                this.registrationService.register(this.model);
+                const link = ['/login'];
+                this.router.navigate(link);
+            }
         })
         
-        // register user with registrationService
-        this.registrationService.register(this.model);
-        const link = ['/login'];
-        this.router.navigate(link);
     }
 }

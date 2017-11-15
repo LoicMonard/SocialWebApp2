@@ -26,7 +26,8 @@ export class AddChannelComponent {
 
     save() {
         if (this.ngForm.valid) {
-            // this.modal.hide() to close de dialog
+            this.channelService.add(this.model.name)
+            this.modal.hide();
         }
     }
 }
