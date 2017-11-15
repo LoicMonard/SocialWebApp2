@@ -34,5 +34,9 @@ export class SocialFeedComponent implements OnInit {
                         this.items = items
                     });
             } );
+
+        this.postSocket.onPost(item => {
+          this.items.push(item);
+        });
     }
 }
