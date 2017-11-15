@@ -19,12 +19,15 @@ export class UserInputsComponent {
     submitted: EventEmitter<any> = new EventEmitter();
 
     constructor(
-        private postervice: PostService
+        private postservice: PostService
     ) {
     }
 
     send() {
-        if (!this.message) return;
+        if(this.message) {
+          // this.submitted.emit(this.message);
+          this.postservice.post(this.channelId, this.message);
+        }
         // emit the message with submitted EventEmitter
     }
 }

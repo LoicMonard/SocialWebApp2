@@ -21,6 +21,7 @@ export class PostComponent {
 
     ngOnInit() {
         this.post.content = this.parser.parse(this.post);
+        // this.postService.getAll().then( post => { this.post})
     }
 
     /**
