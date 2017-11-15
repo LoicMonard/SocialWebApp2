@@ -4,7 +4,6 @@ import { NgForm } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ChannelService } from 'services';
 import { SocketService } from 'app/services/SocketService';
-import { PostSocketService } from 'app/services/PostSocketService';
 
 /**
  * Add a new channel in the list
@@ -22,15 +21,13 @@ export class AddChannelComponent {
     model = { name: '' };
 
     constructor(
-        private channelService: ChannelService,
-        private postSocketService: PostSocketService
+        private channelService: ChannelService
     ) {
     }
 
     save() {
         if (this.ngForm.valid) {
             this.channelService.add(this.model.name);
-            //this.postSocketService.onNewChannel()
             this.modal.hide();
         }
     }

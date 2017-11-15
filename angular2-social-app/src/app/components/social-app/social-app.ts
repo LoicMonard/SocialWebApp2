@@ -3,6 +3,7 @@ import { Channel } from 'models';
 import { ChannelService } from 'services';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router'
+import { PostSocketService } from 'app/services/PostSocketService';
 
 /**
  * Main component. Display the channel list, the social feed and the notification bar for logged users.
@@ -16,6 +17,7 @@ export class SocialAppComponent implements OnInit {
     
     constructor(
         private channelService: ChannelService,
+        private postSocketService: PostSocketService,
         private route: ActivatedRoute,
         private router: Router
     ) {
@@ -31,6 +33,9 @@ export class SocialAppComponent implements OnInit {
                   this.router.navigate(link);
                 }
              });
+        this.postSocketService.onNewChannel(channel => {
+            this.channels.push(channel );
+        });
              
     }
 }
