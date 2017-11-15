@@ -24,7 +24,6 @@ export class SocialAppComponent implements OnInit {
         this.channelService.getAll()
             .then( channels => {
                 this.channels = channels;
-                debugger;
              });
     }
 }

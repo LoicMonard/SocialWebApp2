@@ -1,7 +1,7 @@
 <nav class="list-group">
     <add-channel></add-channel>
     <!-- channel links  -->
-    <a *ngFor="let channel of channels" class="list-group-item" [routerLink]="">{{channel.name}}</a>
+    <a *ngFor="let chan of channels" class="list-group-item" routerLink="/channel/{{chan.id}}">{{chan.name}}</a>
 </nav>
 
 <style>
