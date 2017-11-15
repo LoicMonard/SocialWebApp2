@@ -21,7 +21,9 @@ export class PostComponent {
 
     ngOnInit() {
         this.post.content = this.parser.parse(this.post);
-        // this.postService.getAll().then( post => { this.post})
+        this.postSocket.onComment(item => {
+          this.post.comments.push(item);
+        });
     }
 
     /**
@@ -29,5 +31,10 @@ export class PostComponent {
      * @param message message to send
      */
     onComment(message: string) {
+      this.postService.comment(this.post, message);
+    }
+
+    onLike() {
+      this.postService.like(this.post);
     }
 }
