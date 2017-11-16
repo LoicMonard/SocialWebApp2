@@ -26,8 +26,10 @@ export class UserInputsComponent {
     send() {
         if(this.message) {
           // this.submitted.emit(this.message);
-          this.postservice.post(this.channelId, this.message);
+          // this.postservice.post(this.channelId, this.message);
         }
+
+        this.submitted.emit(this.message);
         // emit the message with submitted EventEmitter
     }
 }

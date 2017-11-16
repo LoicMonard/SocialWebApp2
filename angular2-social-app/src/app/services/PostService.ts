@@ -34,12 +34,16 @@ export class PostService {
 
     like(post: Post): Promise<any> {
         const url = `${this.config.url}/api/post/${post.id}/like`;
-        // like the post
+        return new Promise((resolve) => {
+            post.liked = !post.liked;
+            this.http.post(url, post.id)  
+        });
     }
     
     comment(post: Post, message: string): Promise<any> {
         post.user = this.user;
         const url = `${this.config.url}/api/post/${post.id}/comment`;
+        return this.http.post(url, {message}).map(r => r.json()).toPromise();
         // post the comment
     }
 }

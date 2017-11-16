@@ -25,9 +25,11 @@ export class PostComponent {
 
     ngOnInit() {
         this.post.contents = this.parser.parse(this.post);
-        // this.postService.getAll().then( post => { this.post})
+        this.postSocket.onComment(item => {
     }
 
+          this.post.comments.push(item);
+        });
     isYoutubeContent(postContent: PostContent<any>): boolean {
         return postContent instanceof YoutubePostContent;
     }
@@ -43,5 +45,10 @@ export class PostComponent {
      * @param message message to send
      */
     onComment(message: string) {
+      this.postService.comment(this.post, message);
+    }
+
+    onLike() {
+      this.postService.like(this.post);
     }
 }
