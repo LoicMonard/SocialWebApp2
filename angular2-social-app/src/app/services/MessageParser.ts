@@ -3,7 +3,8 @@ import {
     PostContent,
     YoutubePostContent,
     PicturePostContent,
-    VideoPostContent
+    VideoPostContent,
+    TextPostContent
 }
     from '../models';
 import { debug } from 'util';
@@ -19,36 +20,42 @@ const youtube = "https://youtu.be/";
 export class MessageParser {
 
     parse(post: Post): PostContent<any>[] {
-        let mediaContents: PostContent<any>[] = [];
+        let contents: PostContent<any>[] = [];
+        
+        let contentString: string = post.message;
+        let indexUrl: number;
+        let matchUrl: string;
+        while(contentString.length > 0) {
+            const urlRegex = /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/gmi;
+            const pictureRegex = /http[s]?:\/\/.+\.(jpeg|png|jpg|gif)/gmi;
+            const youtubeRegex = /(http[s]?:\/\/)?www\.(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\/?\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/gmi;
+            const videoRegex = /http[s]?:\/\/.+\.(mp4|mov|mkv|avi)/gmi; // TODO
+            indexUrl = contentString.search(urlRegex);
+            if(indexUrl === -1){
+                contents.push(new TextPostContent(contentString));
+                contentString = "";
+            }
+            else if(indexUrl !== 0) {
+                contents.push(new TextPostContent(contentString.substring(0, indexUrl-1)));
+                contentString = contentString.substring(indexUrl);
+            }
+            else {
+                matchUrl = urlRegex.exec(contentString)[0];
+                if(pictureRegex.exec(matchUrl))
+                    contents.push(new PicturePostContent(matchUrl))
+                else if(youtubeRegex.exec(matchUrl)) {
+                    let video_id = matchUrl.split('v=')[1];
+                    contents.push(new YoutubePostContent(video_id));
+                }
+                else if(videoRegex.exec(matchUrl))
+                    contents.push(new VideoPostContent(matchUrl));
+                else
+                    contents.push(new TextPostContent(matchUrl));
 
-        const pictureRegex = /http[s]?:\/\/.+\.(jpeg|png|jpg|gif)/gmi;
-        let pictureMatch = pictureRegex.exec(post.message);
-        debugger;
-        while(pictureMatch) {
-            // return picture content
-            mediaContents.push(new PicturePostContent(pictureMatch[0]));
-            pictureMatch = pictureRegex.exec(post.message);
-
+                contentString = contentString.substring(matchUrl.length);
+                contentString = contentString.trim();
+            }
         }
-
-        const youtubeRegex = /(http[s]?:\/\/)?www\.(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\/?\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/gmi;
-        // return YoutubeContent if match
-        let youtubeMatch: RegExpExecArray = youtubeRegex.exec(post.message);
-        while(youtubeMatch != null) {
-            let video_id = youtubeMatch[0].split('v=')[1];
-            mediaContents.push(new YoutubePostContent(video_id));
-            youtubeMatch = youtubeRegex.exec(post.message);
-        }
-
-
-        const videoRegex = /http[s]?:\/\/.+\.(mp4|mov|mkv|avi)/gmi; // TODO
-        // return VideoContent if match
-        let videoMatch = videoRegex.exec(post.message);
-        while(videoMatch) {
-            mediaContents.push(new VideoPostContent(videoMatch[0]));
-            videoMatch = videoRegex.exec(post.message);
-        }
-
-        return mediaContents;
+        return contents;
     }
 }

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Post, YoutubePostContent, PicturePostContent, VideoPostContent, PostContent } from 'models';
+import { Post, YoutubePostContent, PicturePostContent, VideoPostContent, TextPostContent, UrlPostContent, PostContent } from 'models';
 import { PostService, PostSocketService, LoggedUser, MessageParser } from 'services';
 
 /**
@@ -35,6 +35,12 @@ export class PostComponent {
     }
     isPictureContent(postContent: PostContent<any>): boolean {
         return postContent instanceof PicturePostContent;
+    }
+    isUrlContent(postContent: PostContent<any>): boolean {
+        return postContent instanceof UrlPostContent;
+    }
+    isTextContent(postContent: PostContent<any>): boolean {
+        return postContent instanceof TextPostContent;
     }
 
     /**

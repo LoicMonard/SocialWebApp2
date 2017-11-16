@@ -69,9 +69,14 @@ export abstract class PostContent<T> {
 export type MediaContent = {
     mediaUrl: string,
 }
-
 export type YoutubeContent = {
     videoId: string,
+}
+export type TextContent = {
+    text: string
+}
+export type UrlContent = {
+    url: string
 }
 
 export class VideoPostContent extends PostContent<MediaContent>{
@@ -81,7 +86,6 @@ export class VideoPostContent extends PostContent<MediaContent>{
         });
     }
 }
-
 export class PicturePostContent extends PostContent<MediaContent>{
     constructor(pictureUrl:string) {
         super('picture', {
@@ -89,11 +93,24 @@ export class PicturePostContent extends PostContent<MediaContent>{
         });
     }
 }
-
 export class YoutubePostContent extends PostContent<YoutubeContent>{
     constructor(videoId:string) {
         super('youtube', {
             videoId: videoId
+        });
+    }
+}
+export class TextPostContent extends PostContent<TextContent> {
+    constructor(text: string) {
+        super('text', {
+            text: text
+        });
+    }
+}
+export class UrlPostContent extends PostContent<UrlContent> {
+    constructor(url: string){
+        super('url', {
+            url: url
         });
     }
 }

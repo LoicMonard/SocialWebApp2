@@ -15,7 +15,6 @@
     </div>
 </div>
 <div class="body">
-    <pre *ngIf="!isMediaContent" class="message">{{post.message}}</pre>
     <!-- post.content here -->
     <div *ngFor="let mediaContent of post.contents">
         <div *ngIf="isYoutubeContent(mediaContent)">
@@ -26,6 +25,12 @@
         </div>
         <div *ngIf="isVideoContent(mediaContent)">
             <video-post-content [postContent]="mediaContent"></video-post-content>
+        </div>
+        <div *ngIf="isUrlContent(mediaContent)">
+            <a href="{{mediaContent.value.url}}">{{mediaContent.value.url}}</a>
+        </div>
+        <div *ngIf="isTextContent(mediaContent)">
+            {{mediaContent.value.text}}
         </div>
     </div>
 </div>
