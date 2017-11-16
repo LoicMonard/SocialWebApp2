@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Post } from 'models';
+import { Post, YoutubePostContent, PicturePostContent, VideoPostContent, PostContent } from 'models';
 import { PostService, PostSocketService, LoggedUser, MessageParser } from 'services';
 
 /**
@@ -11,6 +11,10 @@ import { PostService, PostSocketService, LoggedUser, MessageParser } from 'servi
 })
 export class PostComponent { 
     @Input() post: Post;
+    // isYoutubeContent: boolean = false;
+    // isPictureContent: boolean = false;
+    // isVideoContent: boolean = false;
+    isMediaContent: boolean = false;
     
     constructor(
         private postSocket: PostSocketService, 
@@ -20,8 +24,18 @@ export class PostComponent {
     ) {}
 
     ngOnInit() {
-        this.post.content = this.parser.parse(this.post);
+        this.post.contents = this.parser.parse(this.post);
         // this.postService.getAll().then( post => { this.post})
+    }
+
+    isYoutubeContent(postContent: PostContent<any>): boolean {
+        return postContent instanceof YoutubePostContent;
+    }
+    isVideoContent(postContent: PostContent<any>): boolean {
+        return postContent instanceof VideoPostContent;
+    }
+    isPictureContent(postContent: PostContent<any>): boolean {
+        return postContent instanceof PicturePostContent;
     }
 
     /**

@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class YoutubeFeedContentComponent {
     @Input() postContent: YoutubePostContent;
+    urlstring: string;
     constructor(
         private sanitizer: DomSanitizer
     ) { }

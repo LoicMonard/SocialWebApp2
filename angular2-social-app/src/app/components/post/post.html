@@ -15,8 +15,19 @@
     </div>
 </div>
 <div class="body">
-    <pre class="message">{{post.message}}</pre>
+    <pre *ngIf="!isMediaContent" class="message">{{post.message}}</pre>
     <!-- post.content here -->
+    <div *ngFor="let mediaContent of post.contents">
+        <div *ngIf="isYoutubeContent(mediaContent)">
+            <youtube-post-content [postContent]="mediaContent"></youtube-post-content>
+        </div>
+        <div *ngIf="isPictureContent(mediaContent)">
+            <picture-post-content [postContent]="mediaContent"></picture-post-content>
+        </div>
+        <div *ngIf="isVideoContent(mediaContent)">
+            <video-post-content [postContent]="mediaContent"></video-post-content>
+        </div>
+    </div>
 </div>
 <div class="footer">
     <!-- Comments here -->

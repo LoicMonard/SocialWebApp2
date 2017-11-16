@@ -39,7 +39,7 @@ export class Post {
     creationTime: number;
     liked: boolean;
     message: string;
-    content?: PostContent<any>;
+    contents?: PostContent<any>[];
     comments: Comment[];
 }
 
