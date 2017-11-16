@@ -1,6 +1,6 @@
 <div class="header">
     <div class="user-picture">
-      <img src="{{user.pictureUrl}}" />
+      <img src="{{post.user.pictureUrl}}" />
     </div>
     <div class="username">
       {{user.username}}
@@ -19,7 +19,9 @@
     <!-- post.content here -->
 </div>
 <div class="footer">
-    <div class="comment" *ngFor="let comment of post.comments"><hr>{{comment.message}}</div>
+    <div class="comment" *ngFor="let comment of post.comments">
+      <hr><div class="username2">{{user.username}}</div><br>{{comment.message}}
+    </div>
     <user-inputs [channelId]="post.channel.id" (submitted)="onComment($event)"></user-inputs>
 </div>
 <style>
@@ -57,6 +59,11 @@
         padding: 0 15px;
     }
 
+    .username2 {
+      font-weight: bold;
+      padding: 0;
+    }
+
     .right {
         width: 100%;
         display: flex;
@@ -86,9 +93,10 @@
         border: none;
     }
 
-    .comment {
-      margin-left: 20px;
-      line-height: 30px;
+    .comment  {
+      padding: 0px 40px 0px 40px;
+      line-height: 15px;
       font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+      font-size: 14px;
     }
 </style>
