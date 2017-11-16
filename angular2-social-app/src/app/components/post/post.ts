@@ -11,9 +11,6 @@ import { PostService, PostSocketService, LoggedUser, MessageParser } from 'servi
 })
 export class PostComponent { 
     @Input() post: Post;
-    // isYoutubeContent: boolean = false;
-    // isPictureContent: boolean = false;
-    // isVideoContent: boolean = false;
     isMediaContent: boolean = false;
     
     constructor(
@@ -26,10 +23,10 @@ export class PostComponent {
     ngOnInit() {
         this.post.contents = this.parser.parse(this.post);
         this.postSocket.onComment(item => {
+            this.post.comments.push(item);
+        });
     }
 
-          this.post.comments.push(item);
-        });
     isYoutubeContent(postContent: PostContent<any>): boolean {
         return postContent instanceof YoutubePostContent;
     }
@@ -45,10 +42,10 @@ export class PostComponent {
      * @param message message to send
      */
     onComment(message: string) {
-      this.postService.comment(this.post, message);
+        this.postService.comment(this.post, message);
     }
-
+  
     onLike() {
-      this.postService.like(this.post);
+        this.postService.like(this.post);
     }
 }
